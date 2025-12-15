@@ -44,23 +44,11 @@ export default function PFPGenerator() {
         img.src = hamsterGrids[selectedHamsterGrid].src
     }, [selectedHamsterGrid])
 
-    const removeBlackBackground = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) => {
-        const imageData = ctx.getImageData(x, y, w, h)
-        const data = imageData.data
-        for (let i = 0; i < data.length; i += 4) {
-            const r = data[i], g = data[i + 1], b = data[i + 2]
-            const brightness = (r + g + b) / 3
-            if (brightness < 20) data[i + 3] = 0
-            else if (brightness < 40) data[i + 3] = Math.floor((brightness - 20) * 12)
-        }
-        ctx.putImageData(imageData, x, y)
-    }
-
     const generatePFP = useCallback(() => {
         const canvas = canvasRef.current
         if (!canvas || !bgImage || !hamsterImage) return
 
-        const ctx = canvas.getContext('2d', { willReadFrequently: true })
+        const ctx = canvas.getContext('2d')
         if (!ctx) return
 
         const size = 512
@@ -77,27 +65,16 @@ export default function PFPGenerator() {
         // Layer 1: Background
         ctx.drawImage(bgImage, bgCol * bgCellW, bgRow * bgCellH, bgCellW, bgCellH, 0, 0, size, size)
 
-        // Layer 2: Hamster
-        const tempCanvas = document.createElement('canvas')
-        tempCanvas.width = size
-        tempCanvas.height = size
-        const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true })
-
-        if (tempCtx) {
-            const margin = 35
-            const hamSize = size - margin * 2
-            tempCtx.drawImage(hamsterImage, hamCol * hamCellW, hamRow * hamCellH, hamCellW, hamCellH, margin, margin + 15, hamSize, hamSize)
-            if (hamsterGrids[selectedHamsterGrid].hasBlackBg) {
-                removeBlackBackground(tempCtx, 0, 0, size, size)
-            }
-            ctx.drawImage(tempCanvas, 0, 0)
-        }
+        // Layer 2: Hamster (rendered directly without black bg removal)
+        const margin = 35
+        const hamSize = size - margin * 2
+        ctx.drawImage(hamsterImage, hamCol * hamCellW, hamRow * hamCellH, hamCellW, hamCellH, margin, margin + 15, hamSize, hamSize)
 
         // Layer 3: Neo-Pop Anime Frame
         drawAnimeFrame(ctx, size)
 
         setPreviewUrl(canvas.toDataURL('image/png'))
-    }, [bgImage, hamsterImage, selectedBgIndex, selectedHamsterIndex, selectedHamsterGrid])
+    }, [bgImage, hamsterImage, selectedBgIndex, selectedHamsterIndex])
 
     const drawAnimeFrame = (ctx: CanvasRenderingContext2D, size: number) => {
         const border = 10
