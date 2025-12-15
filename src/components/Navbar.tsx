@@ -10,6 +10,7 @@ const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Tokenomics', href: '#tokenomics' },
+    { name: 'PFP', href: '#pfp' },
     { name: 'Chart', href: '#chart' },
     { name: 'Memes', href: '#memes' },
     { name: 'Community', href: '#community' },
