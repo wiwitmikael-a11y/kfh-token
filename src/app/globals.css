@@ -156,7 +156,7 @@ body {
 }
 
 .bg-grid {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
@@ -201,8 +201,13 @@ body {
 
 /* Marquee Animation */
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -222,19 +227,22 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.1) 50%,
-    transparent 60%
-  );
+  background: linear-gradient(45deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 60%);
   transform: rotate(45deg);
   animation: shine 3s ease-in-out infinite;
 }
 
 @keyframes shine {
-  0% { transform: translateX(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) rotate(45deg); }
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
 }
 
 /* Pulse Ring */
@@ -252,8 +260,15 @@ body {
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.2); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
 }
 
 /* Copy Animation */
@@ -262,27 +277,126 @@ body {
 }
 
 @keyframes copy-flash {
-  0%, 100% { background-color: rgba(78, 205, 196, 0.2); }
-  50% { background-color: rgba(78, 205, 196, 0.5); }
+
+  0%,
+  100% {
+    background-color: rgba(78, 205, 196, 0.2);
+  }
+
+  50% {
+    background-color: rgba(78, 205, 196, 0.5);
+  }
 }
 
-/* Responsive Typography */
+/* Responsive Typography & Layout */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 3.5rem !important;
+  }
+
+  .section-title {
+    font-size: 2.5rem !important;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 3rem !important;
+    font-size: 2.5rem !important;
+    line-height: 1.2 !important;
   }
-  
+
   .section-title {
     font-size: 2rem !important;
+  }
+
+  .neo-button {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  .glass-card {
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .glass-card-strong {
+    border-radius: 16px;
+  }
+
+  section {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2rem !important;
+  }
+
+  .section-title {
+    font-size: 1.5rem !important;
+  }
+
+  .neo-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .glass-card {
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Mobile-specific utilities */
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+  }
+
+  .mobile-text-center {
+    text-align: center !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  .mobile-gap-4 {
+    gap: 1rem !important;
   }
 }
 
 /* Hero Image Kung Fu Animation */
 @keyframes kungfu-stance {
-  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-  25% { transform: translateY(-10px) rotate(-2deg) scale(1.02); }
-  50% { transform: translateY(-5px) rotate(2deg) scale(1.01); }
-  75% { transform: translateY(-15px) rotate(-1deg) scale(1.03); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+
+  25% {
+    transform: translateY(-10px) rotate(-2deg) scale(1.02);
+  }
+
+  50% {
+    transform: translateY(-5px) rotate(2deg) scale(1.01);
+  }
+
+  75% {
+    transform: translateY(-15px) rotate(-1deg) scale(1.03);
+  }
 }
 
 .kungfu-animate {
@@ -327,5 +441,7 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }

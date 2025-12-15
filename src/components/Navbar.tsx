@@ -145,6 +145,20 @@ export default function Navbar() {
                             >
                                 Buy $KFH 🥋
                             </motion.a>
+
+                            {/* Developer Credit - Mobile */}
+                            <motion.a
+                                href="https://x.com/MikaelAthar"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-2 pt-4 text-sm"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.6 }}
+                            >
+                                <span className="text-white/50">Developed by</span>
+                                <span className="text-kfh-coral font-medium">@MikaelAthar</span>
+                            </motion.a>
                         </div>
                     </motion.div>
                 )}
