@@ -60,12 +60,9 @@ export default function Navbar() {
                                 className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 border border-white/10 hover:bg-kfh-coral/20 hover:border-kfh-coral/50 transition-all group"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                title="Developer: @MikaelAthar"
+                                title="Web Developer: @MikaelAthar"
                             >
-                                <svg className="w-4 h-4 text-white/60 group-hover:text-kfh-coral transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                                <span className="text-xs text-white/60 group-hover:text-white transition-colors">by @MikaelAthar</span>
+                                <span className="text-xs text-white/60 group-hover:text-white transition-colors">Web by @MikaelAthar</span>
                             </motion.a>
                         </div>
 
