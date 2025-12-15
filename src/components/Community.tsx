@@ -1,27 +1,28 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-const socialLinks = [
+const socialLinkKeys = [
     {
-        name: 'X Community',
-        description: 'Join our viral community on X',
+        nameKey: 'community.xCommunity',
+        descKey: 'community.xDesc',
         icon: '𝕏',
         url: 'https://x.com/i/communities/2000356522157564334',
         color: 'from-gray-700 to-gray-900',
         hoverColor: 'hover:shadow-white/20',
     },
     {
-        name: 'Dexscreener',
-        description: 'Track live price & charts',
+        nameKey: 'Dexscreener',
+        descKey: 'community.dexDesc',
         icon: '📊',
         url: 'https://dexscreener.com/solana/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump',
         color: 'from-green-600 to-green-800',
         hoverColor: 'hover:shadow-green-500/30',
     },
     {
-        name: 'Pump.fun',
-        description: 'Buy KFH on Pumpfun',
+        nameKey: 'Pump.fun',
+        descKey: 'community.pumpDesc',
         icon: '🚀',
         url: 'https://pump.fun/coin/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump',
         color: 'from-kfh-coral to-kfh-pink',
@@ -29,13 +30,15 @@ const socialLinks = [
     },
 ]
 
-const stats = [
-    { label: 'Community Members', value: '10K+', icon: '👥' },
-    { label: 'Holders', value: 'Growing', icon: '📈' },
-    { label: 'Memes Created', value: '∞', icon: '🎨' },
+const statsKeys = [
+    { labelKey: 'community.members', value: '10K+', icon: '👥' },
+    { labelKey: 'community.holders', valueKey: 'community.growing', icon: '📈' },
+    { labelKey: 'community.memes', value: '∞', icon: '🎨' },
 ]
 
 export default function Community() {
+    const { t } = useLanguage()
+
     return (
         <section id="community" className="relative py-24 overflow-hidden">
             {/* Background */}
@@ -55,21 +58,20 @@ export default function Community() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <span className="text-kfh-yellow font-bold uppercase tracking-wider text-sm">Community</span>
+                    <span className="text-kfh-yellow font-bold uppercase tracking-wider text-sm">{t('community.label')}</span>
                     <h2 className="section-title text-4xl sm:text-5xl font-black mt-4 mb-6">
-                        Join the <span className="gradient-text">KFH Army</span>
+                        <span className="gradient-text">{t('community.title')}</span>
                     </h2>
                     <p className="text-white/60 max-w-2xl mx-auto text-lg">
-                        Connect with fellow kung fu hamster warriors. Share memes, discuss strategies,
-                        and be part of the most viral community on Solana!
+                        {t('community.desc')}
                     </p>
                 </motion.div>
 
                 {/* Social Links Grid */}
                 <div className="grid md:grid-cols-3 gap-6 mb-16">
-                    {socialLinks.map((link, index) => (
+                    {socialLinkKeys.map((link, index) => (
                         <motion.a
-                            key={link.name}
+                            key={link.nameKey}
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -85,11 +87,11 @@ export default function Community() {
                                 {link.icon}
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2 group-hover:text-kfh-coral transition-colors">
-                                {link.name}
+                                {link.nameKey.startsWith('community.') ? t(link.nameKey) : link.nameKey}
                             </h3>
-                            <p className="text-white/60 text-sm mb-4">{link.description}</p>
+                            <p className="text-white/60 text-sm mb-4">{t(link.descKey)}</p>
                             <div className="flex items-center justify-center gap-2 text-kfh-teal text-sm font-medium">
-                                <span>Visit</span>
+                                <span>{t('community.visit')}</span>
                                 <span className="group-hover:translate-x-1 transition-transform">→</span>
                             </div>
                         </motion.a>
@@ -105,17 +107,19 @@ export default function Community() {
                     className="glass-card-strong p-8"
                 >
                     <div className="grid sm:grid-cols-3 gap-8 text-center">
-                        {stats.map((stat, index) => (
+                        {statsKeys.map((stat, index) => (
                             <motion.div
-                                key={stat.label}
+                                key={stat.labelKey}
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
                             >
                                 <div className="text-4xl mb-2">{stat.icon}</div>
-                                <div className="text-3xl font-black gradient-text mb-1">{stat.value}</div>
-                                <div className="text-white/60 text-sm uppercase tracking-wider">{stat.label}</div>
+                                <div className="text-3xl font-black gradient-text mb-1">
+                                    {stat.valueKey ? t(stat.valueKey) : stat.value}
+                                </div>
+                                <div className="text-white/60 text-sm uppercase tracking-wider">{t(stat.labelKey)}</div>
                             </motion.div>
                         ))}
                     </div>
@@ -148,11 +152,10 @@ export default function Community() {
                 >
                     <div className="glass-card inline-block p-8 max-w-2xl">
                         <h3 className="text-2xl font-bold mb-4">
-                            Ready to become a <span className="text-kfh-coral">KFH Warrior</span>?
+                            {t('community.ready')}
                         </h3>
                         <p className="text-white/60 mb-6">
-                            Don&apos;t miss out on the most viral meme token on Solana.
-                            Join the community and let&apos;s take KFH to the moon together! 🚀
+                            {t('community.dontMiss')} 🚀
                         </p>
                         <div className="flex flex-wrap gap-4 justify-center">
                             <motion.a
@@ -163,7 +166,7 @@ export default function Community() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                Buy $KFH Now 🥋
+                                {t('community.buyNow')} 🥋
                             </motion.a>
                             <motion.a
                                 href="https://x.com/i/communities/2000356522157564334"
@@ -173,7 +176,7 @@ export default function Community() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                Join Community 👥
+                                {t('community.join')} 👥
                             </motion.a>
                         </div>
                     </div>

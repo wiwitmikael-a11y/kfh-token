@@ -2,31 +2,18 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-const features = [
-    {
-        icon: '🐹',
-        title: 'The Viral Legend',
-        description: 'Born from the legendary kung fu hamster meme that took the internet by storm. KFH is not just a token, it\'s a movement!',
-    },
-    {
-        icon: '🥋',
-        title: 'Master of Memes',
-        description: 'With its iconic martial arts stance, KFH has become the symbol of strength and determination in the meme coin world.',
-    },
-    {
-        icon: '🚀',
-        title: 'Community Driven',
-        description: 'Built by the community, for the community. Join thousands of KFH warriors in our mission to the moon!',
-    },
-    {
-        icon: '💎',
-        title: 'Diamond Paws',
-        description: 'True KFH holders never sell. We train our paws to hold through any market conditions. WAGMI!',
-    },
+const featureKeys = [
+    { icon: '🐹', titleKey: 'feature.legend.title', descKey: 'feature.legend.desc' },
+    { icon: '🥋', titleKey: 'feature.master.title', descKey: 'feature.master.desc' },
+    { icon: '🚀', titleKey: 'feature.community.title', descKey: 'feature.community.desc' },
+    { icon: '💎', titleKey: 'feature.diamond.title', descKey: 'feature.diamond.desc' },
 ]
 
 export default function About() {
+    const { t } = useLanguage()
+
     return (
         <section id="about" className="relative py-24 overflow-hidden">
             {/* Background */}
@@ -46,14 +33,12 @@ export default function About() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <span className="text-kfh-coral font-bold uppercase tracking-wider text-sm">About KFH</span>
+                    <span className="text-kfh-coral font-bold uppercase tracking-wider text-sm">{t('about.label')}</span>
                     <h2 className="section-title text-4xl sm:text-5xl font-black mt-4 mb-6">
-                        <span className="gradient-text">The Legend</span> of the
-                        <br />Kung Fu Hamster
+                        <span className="gradient-text">{t('about.title')}</span>
                     </h2>
                     <p className="text-white/60 max-w-2xl mx-auto text-lg">
-                        From a simple meme to a global phenomenon. KFH isn&apos;t just a token - it&apos;s a lifestyle.
-                        Join the martial arts master of Solana!
+                        {t('about.desc')}
                     </p>
                 </motion.div>
 
@@ -117,36 +102,30 @@ export default function About() {
                         transition={{ duration: 0.8 }}
                     >
                         <h3 className="text-3xl font-bold mb-6">
-                            <span className="text-kfh-yellow">🥋</span> The Origin Story
+                            <span className="text-kfh-yellow">🥋</span> {t('about.origin')}
                         </h3>
                         <div className="space-y-4 text-white/70 text-lg leading-relaxed">
+                            <p>{t('about.story1')}</p>
                             <p>
-                                It all started with a single image - a tiny hamster standing in a perfect kung fu stance,
-                                paws raised, ready to take on the world. The internet fell in love instantly.
+                                <span className="text-kfh-coral font-semibold">Kung Fu Hamster (KFH)</span> {t('about.story2')}
                             </p>
                             <p>
-                                Now, <span className="text-kfh-coral font-semibold">Kung Fu Hamster (KFH)</span> has evolved
-                                from a beloved meme into the most exciting community-driven token on Solana. Our little
-                                warrior embodies the spirit of every degen who refuses to give up!
-                            </p>
-                            <p>
-                                <span className="text-kfh-teal font-semibold">KFH is ACTUALLY viral</span> - and it belongs
-                                right here on Pumpfun where legends are born! 🚀
+                                <span className="text-kfh-teal font-semibold">{t('about.story3')}</span> 🚀
                             </p>
                         </div>
 
                         <div className="mt-8 flex items-center gap-4">
                             <div className="glass-card px-6 py-4 text-center">
                                 <div className="text-2xl font-bold gradient-text">100%</div>
-                                <div className="text-xs text-white/50 uppercase">Community Owned</div>
+                                <div className="text-xs text-white/50 uppercase">{t('about.community')}</div>
                             </div>
                             <div className="glass-card px-6 py-4 text-center">
                                 <div className="text-2xl font-bold gradient-text">0%</div>
-                                <div className="text-xs text-white/50 uppercase">Tax</div>
+                                <div className="text-xs text-white/50 uppercase">{t('about.tax')}</div>
                             </div>
                             <div className="glass-card px-6 py-4 text-center">
                                 <div className="text-2xl font-bold gradient-text">🔒</div>
-                                <div className="text-xs text-white/50 uppercase">LP Burned</div>
+                                <div className="text-xs text-white/50 uppercase">{t('about.lp')}</div>
                             </div>
                         </div>
                     </motion.div>
@@ -154,9 +133,9 @@ export default function About() {
 
                 {/* Features Grid */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {features.map((feature, index) => (
+                    {featureKeys.map((feature, index) => (
                         <motion.div
-                            key={feature.title}
+                            key={feature.titleKey}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -167,10 +146,10 @@ export default function About() {
                                 {feature.icon}
                             </div>
                             <h4 className="text-xl font-bold mb-2 text-white group-hover:text-kfh-coral transition-colors">
-                                {feature.title}
+                                {t(feature.titleKey)}
                             </h4>
                             <p className="text-white/60 text-sm leading-relaxed">
-                                {feature.description}
+                                {t(feature.descKey)}
                             </p>
                         </motion.div>
                     ))}
