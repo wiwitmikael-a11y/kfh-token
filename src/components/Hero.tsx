@@ -4,19 +4,21 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useSound } from '@/contexts/SoundContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const CONTRACT_ADDRESS = 'GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump'
 const VIRAL_TWEET_URL = 'https://x.com/animalkyat/status/2000094283437916458'
 
 export default function Hero() {
     const [copied, setCopied] = useState(false)
-    const { playCoin, playClick, playWhoosh } = useSound()
+    const { playCoin } = useSound()
+    const { t } = useLanguage()
 
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(CONTRACT_ADDRESS)
             setCopied(true)
-            playCoin() // Coin sound for copy success
+            playCoin()
             setTimeout(() => setCopied(false), 2000)
         } catch (err) {
             console.error('Failed to copy:', err)
@@ -80,7 +82,7 @@ export default function Hero() {
                             className="inline-flex items-center gap-2 neo-card px-4 py-2 mb-6"
                         >
                             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                            <span className="text-sm font-medium text-white/80">Live on Solana</span>
+                            <span className="text-sm font-medium text-white/80">{t('hero.badge')}</span>
                             <span className="text-xs bg-kfh-coral/20 text-kfh-coral px-2 py-0.5 rounded-full">PUMPFUN</span>
                         </motion.div>
 
@@ -91,9 +93,9 @@ export default function Hero() {
                             transition={{ delay: 0.3 }}
                             className="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-6 leading-tight"
                         >
-                            <span className="gradient-text">KUNG FU</span>
+                            <span className="gradient-text">{t('hero.title1')}</span>
                             <br />
-                            <span className="text-white">HAMSTER</span>
+                            <span className="text-white">{t('hero.title2')}</span>
                             <br />
                             <span className="gradient-text-alt">$KFH</span>
                         </motion.h1>
@@ -105,8 +107,7 @@ export default function Hero() {
                             transition={{ delay: 0.4 }}
                             className="text-lg sm:text-xl text-white/70 mb-8 max-w-lg"
                         >
-                            KFH is <span className="text-kfh-coral font-bold">ACTUALLY viral</span> and belongs on Pumpfun!
-                            The cutest martial arts master on Solana. 🥋
+                            {t('hero.tagline')} 🥋
                         </motion.p>
 
                         {/* Contract Address */}
@@ -116,7 +117,7 @@ export default function Hero() {
                             transition={{ delay: 0.5 }}
                             className="mb-8"
                         >
-                            <p className="text-sm text-white/50 mb-2">Contract Address</p>
+                            <p className="text-sm text-white/50 mb-2">{t('hero.ca')}</p>
                             <button
                                 onClick={copyToClipboard}
                                 className={`neo-card px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-all w-full sm:w-auto ${copied ? 'copy-success' : ''}`}
@@ -125,7 +126,7 @@ export default function Hero() {
                                     {CONTRACT_ADDRESS}
                                 </code>
                                 <span className="text-white/60 text-sm whitespace-nowrap">
-                                    {copied ? '✓ Copied!' : '📋 Copy'}
+                                    {copied ? `✓ ${t('hero.copied')}` : `📋 ${t('hero.copy')}`}
                                 </span>
                             </button>
                         </motion.div>
@@ -145,7 +146,7 @@ export default function Hero() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                Buy on Pump.fun 🚀
+                                {t('hero.buyPump')} 🚀
                             </motion.a>
                             <motion.a
                                 href="https://dexscreener.com/solana/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump"
@@ -155,7 +156,7 @@ export default function Hero() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                View Chart 📊
+                                {t('hero.viewChart')} 📊
                             </motion.a>
                         </motion.div>
                     </motion.div>
@@ -169,19 +170,16 @@ export default function Hero() {
                     >
                         {/* Glowing Aura Effect */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                            {/* Outer glow pulse */}
                             <motion.div
                                 className="absolute w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] rounded-full bg-gradient-to-r from-kfh-coral/30 via-kfh-yellow/20 to-kfh-teal/30 blur-3xl"
                                 animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
                                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                             />
-                            {/* Inner glow */}
                             <motion.div
                                 className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-kfh-coral/20 blur-2xl"
                                 animate={{ scale: [1, 1.1, 1] }}
                                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                             />
-                            {/* Energy ring */}
                             <motion.div
                                 className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full border-4 border-kfh-coral/40"
                                 animate={{ rotate: 360 }}
@@ -216,7 +214,6 @@ export default function Hero() {
                                     />
                                 </div>
 
-                                {/* Viral badge */}
                                 <motion.div
                                     className="absolute -top-3 -right-3 bg-kfh-coral text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg border-2 border-white"
                                     animate={{ scale: [1, 1.1, 1] }}
@@ -226,7 +223,6 @@ export default function Hero() {
                                 </motion.div>
                             </a>
 
-                            {/* Tweet Link Badge */}
                             <motion.a
                                 href={VIRAL_TWEET_URL}
                                 target="_blank"
@@ -252,7 +248,7 @@ export default function Hero() {
                 transition={{ delay: 1.5 }}
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
             >
-                <span className="text-white/50 text-sm">Scroll to explore</span>
+                <span className="text-white/50 text-sm">{t('hero.scroll')}</span>
                 <motion.div
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}

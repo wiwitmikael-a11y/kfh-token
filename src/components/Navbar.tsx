@@ -5,20 +5,22 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ThemeToggle from './ThemeToggle'
 import SoundToggle from './SoundToggle'
 import LanguageSwitcher from './LanguageSwitcher'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Tokenomics', href: '#tokenomics' },
-    { name: 'PFP', href: '#pfp' },
-    { name: 'Chart', href: '#chart' },
-    { name: 'Memes', href: '#memes' },
-    { name: 'Community', href: '#community' },
+const navItemKeys = [
+    { key: 'nav.home', href: '#home' },
+    { key: 'nav.about', href: '#about' },
+    { key: 'nav.tokenomics', href: '#tokenomics' },
+    { key: 'nav.pfp', href: '#pfp' },
+    { key: 'nav.chart', href: '#chart' },
+    { key: 'nav.memes', href: '#memes' },
+    { key: 'nav.community', href: '#community' },
 ]
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const { t } = useLanguage()
 
     useEffect(() => {
         const handleScroll = () => {
@@ -69,16 +71,16 @@ export default function Navbar() {
 
                         {/* Desktop Navigation */}
                         <div className="hidden lg:flex items-center gap-6">
-                            {navItems.map((item, index) => (
+                            {navItemKeys.map((item, index) => (
                                 <motion.a
-                                    key={item.name}
+                                    key={item.key}
                                     href={item.href}
                                     className="text-white/70 hover:text-white font-medium transition-colors relative group text-sm"
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.1 }}
                                 >
-                                    {item.name}
+                                    {t(item.key)}
                                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kfh-coral to-kfh-teal group-hover:w-full transition-all duration-300" />
                                 </motion.a>
                             ))}
@@ -139,9 +141,9 @@ export default function Navbar() {
                         className="fixed inset-0 z-40 pt-20 px-4 lg:hidden"
                     >
                         <div className="glass-card-strong p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-                            {navItems.map((item, index) => (
+                            {navItemKeys.map((item, index) => (
                                 <motion.a
-                                    key={item.name}
+                                    key={item.key}
                                     href={item.href}
                                     className="block text-lg font-medium text-white/80 hover:text-white py-3 border-b border-white/10"
                                     onClick={() => setIsMobileMenuOpen(false)}
@@ -149,7 +151,7 @@ export default function Navbar() {
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: index * 0.1 }}
                                 >
-                                    {item.name}
+                                    {t(item.key)}
                                 </motion.a>
                             ))}
 
