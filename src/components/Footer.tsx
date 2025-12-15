@@ -70,7 +70,7 @@ export default function Footer() {
                         </div>
                         <p className="text-white/60 mb-6 max-w-md">
                             The most viral meme token on Solana. Join the kung fu hamster army and
-                            let's take KFH to the moon together! 🚀
+                            let&apos;s take KFH to the moon together! 🚀
                         </p>
 
                         {/* Contract Address */}

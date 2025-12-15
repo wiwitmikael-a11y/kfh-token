@@ -151,8 +151,8 @@ export default function Community() {
                             Ready to become a <span className="text-kfh-coral">KFH Warrior</span>?
                         </h3>
                         <p className="text-white/60 mb-6">
-                            Don't miss out on the most viral meme token on Solana.
-                            Join the community and let's take KFH to the moon together! 🚀
+                            Don&apos;t miss out on the most viral meme token on Solana.
+                            Join the community and let&apos;s take KFH to the moon together! 🚀
                         </p>
                         <div className="flex flex-wrap gap-4 justify-center">
                             <motion.a

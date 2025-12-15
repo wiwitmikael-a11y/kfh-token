@@ -52,7 +52,7 @@ export default function About() {
                         <br />Kung Fu Hamster
                     </h2>
                     <p className="text-white/60 max-w-2xl mx-auto text-lg">
-                        From a simple meme to a global phenomenon. KFH isn't just a token - it's a lifestyle.
+                        From a simple meme to a global phenomenon. KFH isn&apos;t just a token - it&apos;s a lifestyle.
                         Join the martial arts master of Solana!
                     </p>
                 </motion.div>

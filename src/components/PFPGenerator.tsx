@@ -73,7 +73,7 @@ export default function PFPGenerator() {
                         PFP Generator is Under Construction 🛠️
                     </h3>
                     <p className="text-white/60 max-w-md mx-auto mb-8">
-                        We're cooking up something special! Soon you'll be able to create custom
+                        We&apos;re cooking up something special! Soon you&apos;ll be able to create custom
                         KFH profile pictures with unique backgrounds, accessories, and outfits.
                     </p>
 
