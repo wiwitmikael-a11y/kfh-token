@@ -4,32 +4,32 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 
 const CONTRACT_ADDRESS = 'GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump'
+const WEBSITE_URL = 'kfhamster.vercel.app'
 
 // Background grids
 const backgroundGrids = [
-    { id: 'anime', name: 'Anime', src: '/images/pfp/backgrounds/grid-anime.jpg', items: ['Konoha', 'Sunny Go', 'Kame House', 'AoT', 'UA High', 'Fuji', 'City', 'Palace', 'Pokemon'] },
+    { id: 'anime', name: 'Anime', src: '/images/pfp/backgrounds/grid-anime.jpg', items: ['Konoha', 'Sunny', 'Kame', 'AoT', 'UA', 'Fuji', 'City', 'Palace', 'Poke'] },
     { id: 'fantasy', name: 'Fantasy', src: '/images/pfp/backgrounds/grid-fantasy.jpg', items: ['Neon', 'Magic', 'Space', 'Sakura', 'Dojo', 'Beach', 'Cave', 'Rain', 'Epic'] },
     { id: 'kfh', name: 'KFH', src: '/images/pfp/backgrounds/grid-kfh.jpg', items: ['Synth', 'Moon', 'Dojo', 'Gate', 'Sol', 'Coins', 'Grad', 'HODL', 'Neon'] },
 ]
 
-// Hamster grids - Note: Jobs has transparent bg, others need chroma key
+// Hamster grids
 const hamsterGrids = [
     { id: 'jobs', name: 'Jobs', src: '/images/pfp/hamsters/grid-jobs.png', items: ['Chef', 'Doc', 'Fire', 'Farm', 'Art', 'Rock', 'Det', 'Run', 'Sci'], hasBlackBg: false },
-    { id: 'costumes', name: 'Costumes', src: '/images/pfp/hamsters/grid-costumes.jpg', items: ['Super', 'Denim', 'Tux', 'Stripe', 'Floral', 'Astro', 'Bee', 'Knit', 'King'], hasBlackBg: true },
+    { id: 'costumes', name: 'Costume', src: '/images/pfp/hamsters/grid-costumes.jpg', items: ['Super', 'Denim', 'Tux', 'Stripe', 'Floral', 'Astro', 'Bee', 'Knit', 'King'], hasBlackBg: true },
     { id: 'anime', name: 'Anime', src: '/images/pfp/hamsters/grid-anime.jpg', items: ['Naru', 'Goku', 'Luffy', 'Sailor', 'Pika', 'Toto', 'Tan', 'Jojo', 'Deku'], hasBlackBg: true },
 ]
 
 export default function PFPGenerator() {
     const canvasRef = useRef<HTMLCanvasElement>(null)
-    const [selectedBgGrid, setSelectedBgGrid] = useState(2) // Start with KFH theme
+    const [selectedBgGrid, setSelectedBgGrid] = useState(2)
     const [selectedBgIndex, setSelectedBgIndex] = useState(0)
-    const [selectedHamsterGrid, setSelectedHamsterGrid] = useState(0) // Start with Jobs (transparent)
+    const [selectedHamsterGrid, setSelectedHamsterGrid] = useState(0)
     const [selectedHamsterIndex, setSelectedHamsterIndex] = useState(0)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null)
     const [hamsterImage, setHamsterImage] = useState<HTMLImageElement | null>(null)
 
-    // Load images
     useEffect(() => {
         const img = new Image()
         img.crossOrigin = 'anonymous'
@@ -44,30 +44,18 @@ export default function PFPGenerator() {
         img.src = hamsterGrids[selectedHamsterGrid].src
     }, [selectedHamsterGrid])
 
-    // Remove black background from image data
     const removeBlackBackground = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) => {
         const imageData = ctx.getImageData(x, y, w, h)
         const data = imageData.data
-
         for (let i = 0; i < data.length; i += 4) {
-            const r = data[i]
-            const g = data[i + 1]
-            const b = data[i + 2]
-
-            // If pixel is very dark (close to black), make it transparent
+            const r = data[i], g = data[i + 1], b = data[i + 2]
             const brightness = (r + g + b) / 3
-            if (brightness < 25) {
-                data[i + 3] = 0 // Set alpha to 0 (transparent)
-            } else if (brightness < 50) {
-                // Fade out near-black pixels
-                data[i + 3] = Math.floor((brightness - 25) * 10)
-            }
+            if (brightness < 20) data[i + 3] = 0
+            else if (brightness < 40) data[i + 3] = Math.floor((brightness - 20) * 12)
         }
-
         ctx.putImageData(imageData, x, y)
     }
 
-    // Generate PFP
     const generatePFP = useCallback(() => {
         const canvas = canvasRef.current
         if (!canvas || !bgImage || !hamsterImage) return
@@ -79,21 +67,14 @@ export default function PFPGenerator() {
         canvas.width = size
         canvas.height = size
 
-        // Calculate crop positions
-        const bgCellW = bgImage.width / 3
-        const bgCellH = bgImage.height / 3
-        const bgRow = Math.floor(selectedBgIndex / 3)
-        const bgCol = selectedBgIndex % 3
+        const bgCellW = bgImage.width / 3, bgCellH = bgImage.height / 3
+        const bgRow = Math.floor(selectedBgIndex / 3), bgCol = selectedBgIndex % 3
+        const hamCellW = hamsterImage.width / 3, hamCellH = hamsterImage.height / 3
+        const hamRow = Math.floor(selectedHamsterIndex / 3), hamCol = selectedHamsterIndex % 3
 
-        const hamCellW = hamsterImage.width / 3
-        const hamCellH = hamsterImage.height / 3
-        const hamRow = Math.floor(selectedHamsterIndex / 3)
-        const hamCol = selectedHamsterIndex % 3
-
-        // Clear canvas
         ctx.clearRect(0, 0, size, size)
 
-        // Layer 1: Background (full)
+        // Layer 1: Background
         ctx.drawImage(bgImage, bgCol * bgCellW, bgRow * bgCellH, bgCellW, bgCellH, 0, 0, size, size)
 
         // Layer 2: Hamster
@@ -103,97 +84,169 @@ export default function PFPGenerator() {
         const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true })
 
         if (tempCtx) {
-            const hamsterMargin = 40
-            const hamsterSize = size - hamsterMargin * 2
-
-            tempCtx.drawImage(
-                hamsterImage,
-                hamCol * hamCellW, hamRow * hamCellH, hamCellW, hamCellH,
-                hamsterMargin, hamsterMargin + 10, hamsterSize, hamsterSize
-            )
-
-            // Remove black background if needed
+            const margin = 35
+            const hamSize = size - margin * 2
+            tempCtx.drawImage(hamsterImage, hamCol * hamCellW, hamRow * hamCellH, hamCellW, hamCellH, margin, margin + 15, hamSize, hamSize)
             if (hamsterGrids[selectedHamsterGrid].hasBlackBg) {
                 removeBlackBackground(tempCtx, 0, 0, size, size)
             }
-
             ctx.drawImage(tempCanvas, 0, 0)
         }
 
-        // Layer 3: Clean frame
-        drawFrame(ctx, size)
+        // Layer 3: Neo-Pop Anime Frame
+        drawAnimeFrame(ctx, size)
 
         setPreviewUrl(canvas.toDataURL('image/png'))
     }, [bgImage, hamsterImage, selectedBgIndex, selectedHamsterIndex, selectedHamsterGrid])
 
-    // Draw clean trading card frame
-    const drawFrame = (ctx: CanvasRenderingContext2D, size: number) => {
-        const border = 8
-        const radius = 16
+    const drawAnimeFrame = (ctx: CanvasRenderingContext2D, size: number) => {
+        const border = 10
+        const radius = 20
 
-        // Outer white glow
-        ctx.shadowColor = 'rgba(255, 255, 255, 0.5)'
-        ctx.shadowBlur = 10
+        // === OUTER FRAME - Thick white stroke with coral shadow ===
+        ctx.save()
+        ctx.shadowColor = '#FF6B6B'
+        ctx.shadowBlur = 0
+        ctx.shadowOffsetX = 4
+        ctx.shadowOffsetY = 4
         ctx.strokeStyle = '#FFFFFF'
         ctx.lineWidth = border
         ctx.beginPath()
         ctx.roundRect(border / 2, border / 2, size - border, size - border, radius)
         ctx.stroke()
-        ctx.shadowBlur = 0
+        ctx.restore()
 
-        // Inner accent
+        // Inner coral stroke
         ctx.strokeStyle = '#FF6B6B'
-        ctx.lineWidth = 3
+        ctx.lineWidth = 4
         ctx.beginPath()
-        ctx.roundRect(border + 2, border + 2, size - border * 2 - 4, size - border * 2 - 4, radius - 2)
+        ctx.roundRect(border + 4, border + 4, size - border * 2 - 8, size - border * 2 - 8, radius - 4)
         ctx.stroke()
 
-        // Top badge
-        const badgeW = 180
-        const badgeH = 32
-        const badgeX = (size - badgeW) / 2
-        const badgeY = 12
+        // === TOP BANNER ===
+        const bannerH = 42
+        const bannerY = border + 2
 
-        // Badge background
-        ctx.fillStyle = '#FF6B6B'
+        // Banner background with gradient
+        const bannerGrad = ctx.createLinearGradient(0, bannerY, 0, bannerY + bannerH)
+        bannerGrad.addColorStop(0, '#FF6B6B')
+        bannerGrad.addColorStop(1, '#F5576C')
+        ctx.fillStyle = bannerGrad
         ctx.beginPath()
-        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 8)
+        ctx.roundRect(border + 2, bannerY, size - border * 2 - 4, bannerH, [radius - 6, radius - 6, 0, 0])
         ctx.fill()
 
-        // Badge text
+        // Banner stroke
+        ctx.strokeStyle = '#FFFFFF'
+        ctx.lineWidth = 3
+        ctx.stroke()
+
+        // Token name with thick stroke effect
+        ctx.font = 'bold 22px "Arial Black", Arial, sans-serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+
+        // Text stroke (outline)
+        ctx.strokeStyle = '#1A1A2E'
+        ctx.lineWidth = 5
+        ctx.strokeText('KUNG FU HAMSTER', size / 2, bannerY + bannerH / 2 + 1)
+
+        // Text fill
         ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold 14px "Space Grotesk", Arial'
-        ctx.textAlign = 'center'
-        ctx.fillText('KUNG FU HAMSTER', size / 2, badgeY + 21)
+        ctx.fillText('KUNG FU HAMSTER', size / 2, bannerY + bannerH / 2 + 1)
 
-        // Bottom CA bar
-        const caBarH = 28
-        const caBarY = size - border - caBarH - 4
+        // $KFH badge
+        const badgeW = 50, badgeH = 24
+        const badgeX = size - border - badgeW - 8
+        const badgeY2 = bannerY + (bannerH - badgeH) / 2
 
-        // CA background
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
-        ctx.beginPath()
-        ctx.roundRect(border + 4, caBarY, size - border * 2 - 8, caBarH, 6)
-        ctx.fill()
-
-        // CA text
-        ctx.fillStyle = '#4ECDC4'
-        ctx.font = '9px monospace'
-        ctx.textAlign = 'center'
-        const shortCA = CONTRACT_ADDRESS.slice(0, 12) + '...' + CONTRACT_ADDRESS.slice(-8)
-        ctx.fillText('CA: ' + shortCA, size / 2, caBarY + 18)
-
-        // $KFH corner badge
         ctx.fillStyle = '#FFE66D'
         ctx.beginPath()
-        ctx.roundRect(size - 60, 12, 48, 24, 6)
+        ctx.roundRect(badgeX, badgeY2, badgeW, badgeH, 6)
         ctx.fill()
-        ctx.fillStyle = '#1A1A2E'
+        ctx.strokeStyle = '#1A1A2E'
+        ctx.lineWidth = 2
+        ctx.stroke()
+
         ctx.font = 'bold 12px Arial'
-        ctx.fillText('$KFH', size - 36, 28)
+        ctx.fillStyle = '#1A1A2E'
+        ctx.fillText('$KFH', badgeX + badgeW / 2, badgeY2 + badgeH / 2 + 1)
+
+        // === BOTTOM INFO BAR ===
+        const bottomH = 48
+        const bottomY = size - border - bottomH - 2
+
+        // Bottom background
+        const bottomGrad = ctx.createLinearGradient(0, bottomY, 0, bottomY + bottomH)
+        bottomGrad.addColorStop(0, 'rgba(26, 26, 46, 0.95)')
+        bottomGrad.addColorStop(1, 'rgba(15, 15, 26, 0.98)')
+        ctx.fillStyle = bottomGrad
+        ctx.beginPath()
+        ctx.roundRect(border + 2, bottomY, size - border * 2 - 4, bottomH, [0, 0, radius - 6, radius - 6])
+        ctx.fill()
+
+        // Bottom stroke
+        ctx.strokeStyle = '#4ECDC4'
+        ctx.lineWidth = 2
+        ctx.stroke()
+
+        // Website URL - larger, more visible
+        ctx.font = 'bold 14px Arial'
+        ctx.textAlign = 'center'
+        ctx.fillStyle = '#4ECDC4'
+        ctx.fillText('🌐 ' + WEBSITE_URL, size / 2, bottomY + 16)
+
+        // CA - auto-fit to frame width
+        const caText = 'CA: ' + CONTRACT_ADDRESS
+        const maxWidth = size - border * 2 - 24
+
+        // Find the right font size to fit
+        let fontSize = 11
+        ctx.font = `bold ${fontSize}px monospace`
+        while (ctx.measureText(caText).width > maxWidth && fontSize > 6) {
+            fontSize--
+            ctx.font = `bold ${fontSize}px monospace`
+        }
+
+        ctx.fillStyle = '#FFE66D'
+        ctx.fillText(caText, size / 2, bottomY + 35)
+
+        // === DECORATIVE CORNERS ===
+        const cornerLen = 12
+        ctx.strokeStyle = '#FFE66D'
+        ctx.lineWidth = 3
+
+        // Top-left corner (below banner)
+        const cornerTop = bannerY + bannerH + 4
+        ctx.beginPath()
+        ctx.moveTo(border + 6, cornerTop + cornerLen)
+        ctx.lineTo(border + 6, cornerTop)
+        ctx.lineTo(border + 6 + cornerLen, cornerTop)
+        ctx.stroke()
+
+        // Top-right corner (below banner)
+        ctx.beginPath()
+        ctx.moveTo(size - border - 6 - cornerLen, cornerTop)
+        ctx.lineTo(size - border - 6, cornerTop)
+        ctx.lineTo(size - border - 6, cornerTop + cornerLen)
+        ctx.stroke()
+
+        // Bottom-left corner (above info bar)
+        const cornerBot = bottomY - 4
+        ctx.beginPath()
+        ctx.moveTo(border + 6, cornerBot - cornerLen)
+        ctx.lineTo(border + 6, cornerBot)
+        ctx.lineTo(border + 6 + cornerLen, cornerBot)
+        ctx.stroke()
+
+        // Bottom-right corner (above info bar)
+        ctx.beginPath()
+        ctx.moveTo(size - border - 6 - cornerLen, cornerBot)
+        ctx.lineTo(size - border - 6, cornerBot)
+        ctx.lineTo(size - border - 6, cornerBot - cornerLen)
+        ctx.stroke()
     }
 
-    // Random
     const randomGenerate = () => {
         setSelectedBgGrid(Math.floor(Math.random() * 3))
         setSelectedBgIndex(Math.floor(Math.random() * 9))
@@ -201,7 +254,6 @@ export default function PFPGenerator() {
         setSelectedHamsterIndex(Math.floor(Math.random() * 9))
     }
 
-    // Auto-generate
     useEffect(() => {
         if (bgImage && hamsterImage) {
             const timer = setTimeout(generatePFP, 50)
@@ -209,7 +261,6 @@ export default function PFPGenerator() {
         }
     }, [bgImage, hamsterImage, selectedBgIndex, selectedHamsterIndex, generatePFP])
 
-    // Download
     const downloadPFP = () => {
         if (!previewUrl) return
         const link = document.createElement('a')
@@ -218,25 +269,11 @@ export default function PFPGenerator() {
         link.click()
     }
 
-    // Grid button component
-    const GridButton = ({ name, selected, onClick }: { name: string; selected: boolean; onClick: () => void }) => (
-        <button
-            onClick={onClick}
-            className={`px-2 py-1 text-xs font-bold rounded-md transition-all ${selected
-                    ? 'bg-kfh-coral text-white shadow-[2px_2px_0_#1A1A2E]'
-                    : 'bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'
-                }`}
-        >
-            {name}
-        </button>
-    )
-
     return (
         <section id="pfp" className="relative py-16 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-kfh-navy via-kfh-dark to-kfh-navy" />
 
             <div className="relative max-w-5xl mx-auto px-4">
-                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -247,12 +284,10 @@ export default function PFPGenerator() {
                     <h2 className="text-2xl sm:text-3xl font-black mt-2">
                         <span className="gradient-text">Create Your Trading Card</span>
                     </h2>
-                    <p className="text-white/50 text-sm mt-2">729 unique combinations!</p>
+                    <p className="text-white/50 text-sm mt-2">27 × 27 = 729 unique combinations!</p>
                 </motion.div>
 
-                {/* Main content - side by side on desktop, stacked on mobile */}
                 <div className="flex flex-col lg:flex-row gap-6 items-start">
-
                     {/* Preview */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -260,38 +295,21 @@ export default function PFPGenerator() {
                         viewport={{ once: true }}
                         className="w-full lg:w-1/2 flex flex-col items-center"
                     >
-                        <div className="relative w-full max-w-[320px] aspect-square rounded-xl overflow-hidden border-2 border-kfh-coral/50">
-                            <canvas
-                                ref={canvasRef}
-                                width={512}
-                                height={512}
-                                className="w-full h-full"
-                            />
+                        <div className="relative w-full max-w-[360px] aspect-square rounded-2xl overflow-hidden shadow-2xl shadow-kfh-coral/20">
+                            <canvas ref={canvasRef} width={512} height={512} className="w-full h-full" />
                         </div>
 
-                        {/* Action buttons */}
-                        <div className="flex gap-3 mt-4">
-                            <motion.button
-                                onClick={randomGenerate}
-                                className="neo-button text-sm py-2 px-4"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
+                        <div className="flex gap-3 mt-5">
+                            <motion.button onClick={randomGenerate} className="neo-button text-sm py-2 px-5" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                 🎲 Random
                             </motion.button>
-                            <motion.button
-                                onClick={downloadPFP}
-                                disabled={!previewUrl}
-                                className="neo-button-secondary neo-button text-sm py-2 px-4"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
+                            <motion.button onClick={downloadPFP} disabled={!previewUrl} className="neo-button-secondary neo-button text-sm py-2 px-5" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                 📥 Download
                             </motion.button>
                         </div>
                     </motion.div>
 
-                    {/* Controls - compact */}
+                    {/* Controls */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -301,24 +319,20 @@ export default function PFPGenerator() {
                         {/* Background */}
                         <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                             <div className="flex items-center justify-between mb-3">
-                                <span className="text-sm font-bold text-white flex items-center gap-2">🖼️ Background</span>
+                                <span className="text-sm font-bold text-white">🖼️ Background</span>
                                 <div className="flex gap-1">
                                     {backgroundGrids.map((g, i) => (
-                                        <GridButton key={g.id} name={g.name} selected={selectedBgGrid === i} onClick={() => { setSelectedBgGrid(i); setSelectedBgIndex(0); }} />
+                                        <button key={g.id} onClick={() => { setSelectedBgGrid(i); setSelectedBgIndex(0); }}
+                                            className={`px-2 py-1 text-xs font-bold rounded transition-all ${selectedBgGrid === i ? 'bg-kfh-coral text-white' : 'bg-white/10 text-white/50 hover:bg-white/20'}`}>
+                                            {g.name}
+                                        </button>
                                     ))}
                                 </div>
                             </div>
                             <div className="grid grid-cols-9 gap-1">
                                 {backgroundGrids[selectedBgGrid].items.map((name, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setSelectedBgIndex(idx)}
-                                        className={`aspect-square rounded text-[8px] font-bold transition-all ${selectedBgIndex === idx
-                                                ? 'bg-kfh-coral text-white ring-2 ring-white'
-                                                : 'bg-white/10 text-white/50 hover:bg-white/20'
-                                            }`}
-                                        title={name}
-                                    >
+                                    <button key={idx} onClick={() => setSelectedBgIndex(idx)} title={name}
+                                        className={`aspect-square rounded text-[9px] font-bold transition-all ${selectedBgIndex === idx ? 'bg-kfh-coral text-white ring-2 ring-white' : 'bg-white/10 text-white/40 hover:bg-white/20'}`}>
                                         {idx + 1}
                                     </button>
                                 ))}
@@ -328,34 +342,27 @@ export default function PFPGenerator() {
                         {/* Hamster */}
                         <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                             <div className="flex items-center justify-between mb-3">
-                                <span className="text-sm font-bold text-white flex items-center gap-2">🐹 Hamster</span>
+                                <span className="text-sm font-bold text-white">🐹 Hamster</span>
                                 <div className="flex gap-1">
                                     {hamsterGrids.map((g, i) => (
-                                        <GridButton key={g.id} name={g.name} selected={selectedHamsterGrid === i} onClick={() => { setSelectedHamsterGrid(i); setSelectedHamsterIndex(0); }} />
+                                        <button key={g.id} onClick={() => { setSelectedHamsterGrid(i); setSelectedHamsterIndex(0); }}
+                                            className={`px-2 py-1 text-xs font-bold rounded transition-all ${selectedHamsterGrid === i ? 'bg-kfh-teal text-white' : 'bg-white/10 text-white/50 hover:bg-white/20'}`}>
+                                            {g.name}
+                                        </button>
                                     ))}
                                 </div>
                             </div>
                             <div className="grid grid-cols-9 gap-1">
                                 {hamsterGrids[selectedHamsterGrid].items.map((name, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setSelectedHamsterIndex(idx)}
-                                        className={`aspect-square rounded text-[8px] font-bold transition-all ${selectedHamsterIndex === idx
-                                                ? 'bg-kfh-teal text-white ring-2 ring-white'
-                                                : 'bg-white/10 text-white/50 hover:bg-white/20'
-                                            }`}
-                                        title={name}
-                                    >
+                                    <button key={idx} onClick={() => setSelectedHamsterIndex(idx)} title={name}
+                                        className={`aspect-square rounded text-[9px] font-bold transition-all ${selectedHamsterIndex === idx ? 'bg-kfh-teal text-white ring-2 ring-white' : 'bg-white/10 text-white/40 hover:bg-white/20'}`}>
                                         {idx + 1}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Tip */}
-                        <p className="text-xs text-white/40 text-center">
-                            💡 Jobs hamsters have transparent backgrounds for best results!
-                        </p>
+                        <p className="text-xs text-white/40 text-center">💡 Tip: Jobs hamsters have perfect transparency!</p>
                     </motion.div>
                 </div>
             </div>
