@@ -47,6 +47,17 @@ export default function Navbar() {
                             <span className="font-bold text-2xl gradient-text font-space">KFH</span>
                         </motion.a>
 
+                        {/* Developer Credit */}
+                        <a
+                            href="https://x.com/MikaelAthar"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hidden sm:flex items-center gap-2 glass-card px-3 py-1.5 text-xs hover:bg-white/10 transition-colors"
+                        >
+                            <span className="text-white/50">Dev by</span>
+                            <span className="text-kfh-coral font-medium">@MikaelAthar</span>
+                        </a>
+
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center gap-8">
                             {navItems.map((item, index) => (

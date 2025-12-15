@@ -178,16 +178,7 @@ export default function Footer() {
                 >
                     <p>© 2024 Kung Fu Hamster. All rights reserved.</p>
                     <p className="flex items-center gap-2">
-                        Developed by{' '}
-                        <a
-                            href="https://x.com/MikaelAthar"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-kfh-coral hover:text-kfh-teal transition-colors font-medium"
-                        >
-                            @MikaelAthar
-                        </a>
-                        <span className="text-kfh-coral animate-pulse">🚀</span>
+                        Made with <span className="text-kfh-coral animate-pulse">❤️</span> by the KFH Community
                     </p>
                 </motion.div>
             </div>
