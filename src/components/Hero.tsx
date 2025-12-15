@@ -3,17 +3,20 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useSound } from '@/contexts/SoundContext'
 
 const CONTRACT_ADDRESS = 'GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump'
 const VIRAL_TWEET_URL = 'https://x.com/animalkyat/status/2000094283437916458'
 
 export default function Hero() {
     const [copied, setCopied] = useState(false)
+    const { playCoin, playClick, playWhoosh } = useSound()
 
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(CONTRACT_ADDRESS)
             setCopied(true)
+            playCoin() // Coin sound for copy success
             setTimeout(() => setCopied(false), 2000)
         } catch (err) {
             console.error('Failed to copy:', err)

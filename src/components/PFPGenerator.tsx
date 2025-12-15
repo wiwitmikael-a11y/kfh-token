@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
+import { useSound } from '@/contexts/SoundContext'
 
 const CONTRACT_ADDRESS = 'GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump'
 const WEBSITE_URL = 'kfhamster.vercel.app'
@@ -29,6 +30,7 @@ export default function PFPGenerator() {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null)
     const [hamsterImage, setHamsterImage] = useState<HTMLImageElement | null>(null)
+    const { playPop, playClick, playSuccess, playWhoosh } = useSound()
 
     useEffect(() => {
         const img = new Image()
