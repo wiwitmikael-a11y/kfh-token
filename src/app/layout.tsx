@@ -6,7 +6,11 @@ export const metadata: Metadata = {
     title: 'KFH - Kung Fu Hamster | The Most Viral Meme Token on Solana',
     description: 'KFH is ACTUALLY viral and belongs on Pumpfun! Join the Kung Fu Hamster community - the cutest martial arts master on Solana blockchain.',
     keywords: ['KFH', 'Kung Fu Hamster', 'Solana', 'Pumpfun', 'meme token', 'crypto', 'NFT', 'memecoin'],
-    authors: [{ name: 'KFH Community' }],
+    authors: [{ name: 'KFH Community' }, { name: '@MikaelAthar', url: 'https://x.com/MikaelAthar' }],
+    icons: {
+        icon: '/favicon.svg',
+        apple: '/images/kfh-hero.png',
+    },
     openGraph: {
         title: 'KFH - Kung Fu Hamster',
         description: 'The Most Viral Meme Token on Solana! 🐹🥋',

@@ -39,17 +39,35 @@ export default function Navbar() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between">
                         {/* Logo */}
-                        <motion.a
-                            href="#home"
-                            className="flex items-center gap-3 group"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-kfh-coral to-kfh-pink flex items-center justify-center text-xl sm:text-2xl shadow-lg group-hover:shadow-kfh-coral/50 transition-shadow">
-                                🐹
-                            </div>
-                            <span className="font-bold text-xl sm:text-2xl gradient-text font-space">KFH</span>
-                        </motion.a>
+                        <div className="flex items-center gap-2">
+                            <motion.a
+                                href="#home"
+                                className="flex items-center gap-3 group"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-kfh-coral to-kfh-pink flex items-center justify-center text-xl sm:text-2xl shadow-lg group-hover:shadow-kfh-coral/50 transition-shadow">
+                                    🐹
+                                </div>
+                                <span className="font-bold text-xl sm:text-2xl gradient-text font-space">KFH</span>
+                            </motion.a>
+
+                            {/* Developer Credit */}
+                            <motion.a
+                                href="https://x.com/MikaelAthar"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 border border-white/10 hover:bg-kfh-coral/20 hover:border-kfh-coral/50 transition-all group"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                title="Developer: @MikaelAthar"
+                            >
+                                <svg className="w-4 h-4 text-white/60 group-hover:text-kfh-coral transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                                <span className="text-xs text-white/60 group-hover:text-white transition-colors">by @MikaelAthar</span>
+                            </motion.a>
+                        </div>
 
                         {/* Desktop Navigation */}
                         <div className="hidden lg:flex items-center gap-6">
