@@ -1,0 +1,19 @@
+# KFH Token Website
+# https://kfh-token.vercel.app
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kfh-token.vercel.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Block access to API endpoints if any
+Disallow: /api/
+
+# Allow all static assets
+Allow: /images/
+Allow: /*.css
+Allow: /*.js
