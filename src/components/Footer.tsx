@@ -2,35 +2,40 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { useSound } from '@/contexts/SoundContext'
 
 const CONTRACT_ADDRESS = 'GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump'
 
-const footerLinks = [
-    {
-        title: 'Community',
-        links: [
-            { name: 'X Community', url: 'https://x.com/i/communities/2000356522157564334' },
-            { name: 'Dexscreener', url: 'https://dexscreener.com/solana/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump' },
-            { name: 'Pump.fun', url: 'https://pump.fun/coin/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump' },
-        ],
-    },
-    {
-        title: 'Resources',
-        links: [
-            { name: 'Tokenomics', url: '#tokenomics' },
-            { name: 'PFP Generator', url: '#pfp' },
-            { name: 'About', url: '#about' },
-        ],
-    },
-]
-
 export default function Footer() {
     const [copied, setCopied] = useState(false)
+    const { t } = useLanguage()
+    const { playCoin } = useSound()
+
+    const footerLinks = [
+        {
+            titleKey: 'community.label',
+            links: [
+                { nameKey: 'community.xCommunity', url: 'https://x.com/i/communities/2000356522157564334' },
+                { name: 'Dexscreener', url: 'https://dexscreener.com/solana/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump' },
+                { name: 'Pump.fun', url: 'https://pump.fun/coin/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump' },
+            ],
+        },
+        {
+            titleKey: 'footer.resources',
+            links: [
+                { nameKey: 'nav.tokenomics', url: '#tokenomics' },
+                { nameKey: 'nav.pfp', url: '#pfp' },
+                { nameKey: 'nav.about', url: '#about' },
+            ],
+        },
+    ]
 
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(CONTRACT_ADDRESS)
             setCopied(true)
+            playCoin()
             setTimeout(() => setCopied(false), 2000)
         } catch (err) {
             console.error('Failed to copy:', err)
@@ -69,13 +74,12 @@ export default function Footer() {
                             </div>
                         </div>
                         <p className="text-white/60 mb-6 max-w-md">
-                            The most viral meme token on Solana. Join the kung fu hamster army and
-                            let&apos;s take KFH to the moon together! 🚀
+                            {t('footer.desc')} 🚀
                         </p>
 
                         {/* Contract Address */}
                         <div className="mb-6">
-                            <p className="text-xs text-white/40 mb-2 uppercase tracking-wider">Contract Address</p>
+                            <p className="text-xs text-white/40 mb-2 uppercase tracking-wider">{t('hero.ca')}</p>
                             <button
                                 onClick={copyToClipboard}
                                 className={`glass-card py-2 px-4 text-xs font-mono flex items-center gap-2 hover:bg-white/10 transition-all ${copied ? 'copy-success' : ''
@@ -126,23 +130,23 @@ export default function Footer() {
                     {/* Links */}
                     {footerLinks.map((section, index) => (
                         <motion.div
-                            key={section.title}
+                            key={section.titleKey}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: (index + 1) * 0.1 }}
                         >
-                            <h4 className="font-bold text-white mb-4">{section.title}</h4>
+                            <h4 className="font-bold text-white mb-4">{t(section.titleKey)}</h4>
                             <ul className="space-y-3">
                                 {section.links.map((link) => (
-                                    <li key={link.name}>
+                                    <li key={link.nameKey || link.name}>
                                         <a
                                             href={link.url}
                                             target={link.url.startsWith('http') ? '_blank' : undefined}
                                             rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                                             className="text-white/60 hover:text-kfh-coral transition-colors text-sm"
                                         >
-                                            {link.name}
+                                            {link.nameKey ? t(link.nameKey) : link.name}
                                         </a>
                                     </li>
                                 ))}
@@ -161,9 +165,7 @@ export default function Footer() {
                 >
                     <div className="glass-card p-4 text-center">
                         <p className="text-white/40 text-xs leading-relaxed">
-                            ⚠️ <strong>Disclaimer:</strong> $KFH is a meme token with no intrinsic value or expectation of financial return.
-                            There is no formal team or roadmap. The token is created for entertainment purposes only.
-                            Always do your own research (DYOR) before investing in any cryptocurrency.
+                            ⚠️ <strong>{t('footer.disclaimer')}:</strong> {t('footer.disclaimerText')}
                         </p>
                     </div>
                 </motion.div>
@@ -176,9 +178,9 @@ export default function Footer() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white/40 text-sm"
                 >
-                    <p>© 2024 Kung Fu Hamster. All rights reserved.</p>
+                    <p>© 2024 Kung Fu Hamster. {t('footer.rights')}</p>
                     <p className="flex items-center gap-2">
-                        Made with <span className="text-kfh-coral animate-pulse">❤️</span> by the KFH Community
+                        {t('footer.madeWith')} <span className="text-kfh-coral animate-pulse">❤️</span> {t('footer.by')}
                     </p>
                 </motion.div>
             </div>

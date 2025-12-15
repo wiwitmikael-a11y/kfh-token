@@ -1,10 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const CONTRACT_ADDRESS = 'GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump'
 
 export default function ChartEmbed() {
+    const { t } = useLanguage()
+
     return (
         <section id="chart" className="relative py-24 overflow-hidden">
             {/* Background */}
@@ -24,12 +27,12 @@ export default function ChartEmbed() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <span className="text-kfh-teal font-bold uppercase tracking-wider text-sm">Live Chart</span>
+                    <span className="text-kfh-teal font-bold uppercase tracking-wider text-sm">{t('chart.label')}</span>
                     <h2 className="section-title text-4xl sm:text-5xl font-black mt-4 mb-6">
-                        <span className="gradient-text">$KFH</span> Price Chart
+                        <span className="gradient-text">$KFH</span> {t('chart.title')}
                     </h2>
                     <p className="text-white/60 max-w-2xl mx-auto text-lg">
-                        Track KFH price action in real-time. Powered by DexScreener.
+                        {t('chart.desc')} {t('chart.powered')}
                     </p>
                 </motion.div>
 

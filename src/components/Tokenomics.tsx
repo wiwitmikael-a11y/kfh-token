@@ -1,19 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
-const tokenomicsData = [
-    { label: 'Total Supply', value: '1,000,000,000', icon: '💰' },
-    { label: 'Tax', value: '0%', icon: '✨' },
-    { label: 'LP Status', value: 'Burned 🔥', icon: '🔒' },
-    { label: 'Contract', value: 'Renounced', icon: '📜' },
-]
-
-const distribution = [
-    { name: 'Community', percentage: 100, color: 'from-kfh-coral to-kfh-pink' },
-]
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Tokenomics() {
+    const { t } = useLanguage()
+
+    const tokenomicsData = [
+        { labelKey: 'tokenomics.supply', value: '1B', icon: '💰' },
+        { labelKey: 'tokenomics.taxLabel', value: '0%', icon: '✨' },
+        { labelKey: 'tokenomics.lpStatus', valueKey: 'tokenomics.burned', icon: '🔒' },
+        { labelKey: 'tokenomics.contract', valueKey: 'tokenomics.renounced', icon: '📜' },
+    ]
+
     return (
         <section id="tokenomics" className="relative py-24 overflow-hidden">
             {/* Background */}
@@ -49,13 +48,12 @@ export default function Tokenomics() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <span className="text-kfh-teal font-bold uppercase tracking-wider text-sm">Tokenomics</span>
+                    <span className="text-kfh-teal font-bold uppercase tracking-wider text-sm">{t('tokenomics.label')}</span>
                     <h2 className="section-title text-4xl sm:text-5xl font-black mt-4 mb-6">
-                        Simple. <span className="gradient-text">Fair.</span> Community.
+                        <span className="gradient-text">{t('tokenomics.title')}</span>
                     </h2>
                     <p className="text-white/60 max-w-2xl mx-auto text-lg">
-                        No complicated tokenomics. No hidden fees. Just pure meme power
-                        distributed 100% to the community.
+                        {t('tokenomics.desc')}
                     </p>
                 </motion.div>
 
@@ -63,7 +61,7 @@ export default function Tokenomics() {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                     {tokenomicsData.map((item, index) => (
                         <motion.div
-                            key={item.label}
+                            key={item.labelKey}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -71,8 +69,10 @@ export default function Tokenomics() {
                             className="glass-card p-6 text-center card-hover group gradient-border"
                         >
                             <div className="text-4xl mb-4">{item.icon}</div>
-                            <div className="text-2xl sm:text-3xl font-bold gradient-text mb-2">{item.value}</div>
-                            <div className="text-white/60 text-sm uppercase tracking-wider">{item.label}</div>
+                            <div className="text-2xl sm:text-3xl font-bold gradient-text mb-2">
+                                {item.valueKey ? t(item.valueKey) : item.value}
+                            </div>
+                            <div className="text-white/60 text-sm uppercase tracking-wider">{t(item.labelKey)}</div>
                         </motion.div>
                     ))}
                 </div>
@@ -134,7 +134,7 @@ export default function Tokenomics() {
                                             <span className="text-5xl">🐹</span>
                                         </motion.div>
                                         <div className="text-3xl font-black gradient-text mt-2">100%</div>
-                                        <div className="text-white/60 text-sm">Community</div>
+                                        <div className="text-white/60 text-sm">{t('about.community')}</div>
                                     </div>
                                 </div>
                             </div>
@@ -142,12 +142,12 @@ export default function Tokenomics() {
                             {/* Info */}
                             <div className="space-y-6">
                                 <h3 className="text-2xl font-bold text-white">
-                                    Fair Launch on <span className="text-kfh-coral">Pumpfun</span>
+                                    {t('tokenomics.title')}
                                 </h3>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4">
                                         <div className="w-3 h-3 rounded-full bg-gradient-to-r from-kfh-coral to-kfh-pink" />
-                                        <span className="text-white/80">100% of tokens to community</span>
+                                        <span className="text-white/80">{t('tokenomics.communityNote')}</span>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <div className="w-3 h-3 rounded-full bg-kfh-teal" />
@@ -185,7 +185,7 @@ export default function Tokenomics() {
                     transition={{ duration: 0.6, delay: 0.3 }}
                     className="text-center mt-12"
                 >
-                    <p className="text-white/60 mb-6">Ready to join the kung fu hamster army?</p>
+                    <p className="text-white/60 mb-6">{t('community.ready')}</p>
                     <motion.a
                         href="https://pump.fun/coin/GQx3p7aTHLQHDqzFR3c1QSk1Qhy2hz4YbAnkjdXtpump"
                         target="_blank"
@@ -194,7 +194,7 @@ export default function Tokenomics() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <span>Buy $KFH Now</span>
+                        <span>{t('community.buyNow')}</span>
                         <span className="text-xl">🥋</span>
                     </motion.a>
                 </motion.div>
