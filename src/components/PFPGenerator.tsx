@@ -13,11 +13,11 @@ const backgroundGrids = [
     { id: 'kfh', name: 'KFH', src: '/images/pfp/backgrounds/grid-kfh.jpg', items: ['Synth', 'Moon', 'Dojo', 'Gate', 'Sol', 'Coins', 'Grad', 'HODL', 'Neon'] },
 ]
 
-// Hamster grids
+// Hamster grids - All PNG with transparent backgrounds
 const hamsterGrids = [
-    { id: 'jobs', name: 'Jobs', src: '/images/pfp/hamsters/grid-jobs.png', items: ['Chef', 'Doc', 'Fire', 'Farm', 'Art', 'Rock', 'Det', 'Run', 'Sci'], hasBlackBg: false },
-    { id: 'costumes', name: 'Costume', src: '/images/pfp/hamsters/grid-costumes.jpg', items: ['Super', 'Denim', 'Tux', 'Stripe', 'Floral', 'Astro', 'Bee', 'Knit', 'King'], hasBlackBg: true },
-    { id: 'anime', name: 'Anime', src: '/images/pfp/hamsters/grid-anime.jpg', items: ['Naru', 'Goku', 'Luffy', 'Sailor', 'Pika', 'Toto', 'Tan', 'Jojo', 'Deku'], hasBlackBg: true },
+    { id: 'jobs', name: 'Jobs', src: '/images/pfp/hamsters/grid-jobs.png', items: ['Chef', 'Doc', 'Fire', 'Farm', 'Art', 'Rock', 'Det', 'Run', 'Sci'] },
+    { id: 'costumes', name: 'Costume', src: '/images/pfp/hamsters/grid-costumes.png', items: ['Super', 'Denim', 'Tux', 'Stripe', 'Floral', 'Astro', 'Bee', 'Knit', 'King'] },
+    { id: 'anime', name: 'Anime', src: '/images/pfp/hamsters/grid-anime.png', items: ['Naru', 'Goku', 'Luffy', 'Sailor', 'Pika', 'Toto', 'Tan', 'Jojo', 'Deku'] },
 ]
 
 export default function PFPGenerator() {
