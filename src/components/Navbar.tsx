@@ -183,7 +183,7 @@ export default function Navbar() {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.6 }}
                             >
-                                <span className="text-white/50">Developed by</span>
+                                <span className="text-white/50">Web by</span>
                                 <span className="text-kfh-coral font-medium">@MikaelAthar</span>
                             </motion.a>
                         </div>
